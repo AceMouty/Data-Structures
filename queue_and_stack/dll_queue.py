@@ -18,5 +18,17 @@ class Queue:
         else:
             return
 
+    # Extra methods :)
+
+    def peek(self):
+        if self.size != 0:
+            head_value = self.storage.head.value
+            return head_value
+        else:
+            return
+
+    def view_queue(self):
+        self.storage.get_items()
+
     def len(self):
         return self.size
