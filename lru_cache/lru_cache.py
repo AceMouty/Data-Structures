@@ -66,15 +66,6 @@ class LRUCache:
     such that the pair is considered most-recently used.
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
-
-    Get Item from the cache:
-    - Ref steps above ^^^^
-    - Return the node from setter fn (steps above)
-
-    Remove Item from the cache:
-    - If the cache is overfull, delete the tail, return the removed node
-    - Remove the tail pointer from the hash table wher KVP value == removed node value
-
     """
 
     def get(self, key):
@@ -93,23 +84,6 @@ class LRUCache:
     case that the key already exists in the cache, we simply
     want to overwrite the old value associated with the key with
     the newly-specified value.
-
-
-
-    Adding entries to the cache:
-    - if the data exists
-        - Check the hash with the provided key to see if the key is a key in the hash
-        - Move the new entry to the head of the list
-    - if not
-        - If the hash is full, then we need to remove the tail (return del node)
-        - Delete the tail pointer from hash table (ref del node for this)
-        - create a new node in the list (return new node addr)
-        - create a KVP in the hash that points to the new node (use created node addr)
-    - finally
-        - create a new node in the DLL (return new node addr)
-        - Add Hash table entry that holds a pointer to the new DLL node (use created node addr)
-    - return the found / new item
-
     """
 
     def set(self, key, value):
