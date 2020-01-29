@@ -11,7 +11,8 @@ LRU Cache discards the least recently used item in teh cache, when the cache is 
 
 Sructs needed:
 
-Hash Table: Need to be able to look something up with a key. Hash table will allow us to quickly look up cache entries by key
+Hash Table: Need to be able to look something up with a key. Hash table will allow us to quickly look up cache
+            entries by key
 Doubly Linked List: Need to organize our data in least and most recently used data.
     - The DLL makes it easy to move data to the head O(1)
     - The DLL makes it easy to remove data from the tail O(1)
@@ -41,6 +42,7 @@ Remove Item from the cache:
     - If the cache is overfull, delete the tail, return the removed node
     - Remove the tail pointer from the hash table wher KVP value == removed node value
 """
+from doubly_linked_list import DoublyLinkedList
 
 
 class LRUCache:
@@ -53,7 +55,10 @@ class LRUCache:
     """
 
     def __init__(self, limit=10):
-        pass
+        self.cache = {}
+        self.dll = DoublyLinkedList()
+        self.limit = limit
+        self.size = 0
 
     """
     Retrieves the value associated with the given key. Also
@@ -75,7 +80,28 @@ class LRUCache:
     case that the key already exists in the cache, we simply
     want to overwrite the old value associated with the key with
     the newly-specified value.
+
+
+
+    Adding entries to the cache:
+    - if the data exists
+        - Check the hash with the provided key to see if the key is a key in the hash
+        - Move the new entry to the head of the list
+    - if not
+        - If the hash is full, then we need to remove the tail (return del node)
+        - Delete the tail pointer from hash table (ref del node for this)
+        - create a new node in the list (return new node addr)
+        - create a KVP in the hash that points to the new node (use created node addr)
+    - finally
+        - create a new node in the DLL (return new node addr)
+        - Add Hash table entry that holds a pointer to the new DLL node (use created node addr)
+    - return the found / new item
+
     """
 
     def set(self, key, value):
-        pass
+        # if they key passed exists then update the value
+        # and make it the head of the list
+        if key in self.cache.keys():
+            self.cache[key].value = value
+            self.dll.move_to_front(self.cache[key])
