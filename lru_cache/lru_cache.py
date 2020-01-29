@@ -66,10 +66,23 @@ class LRUCache:
     such that the pair is considered most-recently used.
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
+
+    Get Item from the cache:
+    - Ref steps above ^^^^
+    - Return the node from setter fn (steps above)
+
+    Remove Item from the cache:
+    - If the cache is overfull, delete the tail, return the removed node
+    - Remove the tail pointer from the hash table wher KVP value == removed node value
+
     """
 
     def get(self, key):
-        pass
+        if key in self.cache.keys():
+            self.dll.move_to_front(self.cache[key])
+            return self.cache[key].value[1]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -103,5 +116,19 @@ class LRUCache:
         # if they key passed exists then update the value
         # and make it the head of the list
         if key in self.cache.keys():
-            self.cache[key].value = value
+            self.cache[key].value = (key, value)
             self.dll.move_to_front(self.cache[key])
+            return self.cache[key]
+
+        elif key not in self.cache.keys():
+
+            self.size += 1
+            self.cache[key] = self.dll.add_to_head((key, value))
+
+            # remove the LRU obj if we are at capactiy
+            if self.size > self.limit:
+                self.size -= 1
+                old_node = self.dll.remove_from_tail()
+                del self.cache[old_node.value[0]]
+
+            return self.cache[key]
