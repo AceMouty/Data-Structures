@@ -93,7 +93,7 @@ class BinarySearchTree:
     # implement a queue
     def bft_print(self, node):
         bst_queue = Queue()
-        bst_queue.enqueue(self)
+        bst_queue.enqueue(node)
         current_node = bst_queue.dequeue()
 
         while current_node:
