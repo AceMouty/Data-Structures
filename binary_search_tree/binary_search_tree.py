@@ -1,7 +1,7 @@
+import sys
+sys.path.append('../queue_and_stack')
+from dll_queue import Queue
 # from dll_stack import Stack
-# from dll_queue import Queue
-# import sys
-# sys.path.append('../queue_and_stack')
 
 
 class BinarySearchTree:
@@ -49,17 +49,22 @@ class BinarySearchTree:
 
     # Return the maximum value found in the tree
     def get_max(self):
-        current_node = self
+        # current_node = self
 
-        while True:
-            if current_node.right is not None:
-                current_node = current_node.right
-            elif current_node.right is None:
-                return current_node.value
+        # while True:
+        #     if current_node.right is not None:
+        #         current_node = current_node.right
+        #     elif current_node.right is None:
+        #         return current_node.value
+
+        if self.right:
+            return self.right.get_max()
+        return self.value
 
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
 
+    # THE FOR EACH IS A DEPTH FIRST SEARCH SETUP!
     def for_each(self, cb):
         # at a leaf node
         cb(self.value)
@@ -75,13 +80,34 @@ class BinarySearchTree:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
 
-    def in_order_print(self, node):
-        pass
+    def in_order_print(self, node=None):
+
+        if self.left:
+            self.left.in_order_print()
+        print(self.value)
+        if self.right:
+            self.right.in_order_print()
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
+    # implement a queue
     def bft_print(self, node):
-        pass
+        bst_queue = Queue()
+        bst_queue.enqueue(self)
+        current_node = bst_queue.dequeue()
+
+        while current_node:
+            print(current_node.value)
+            if current_node.right:
+                bst_queue.enqueue(current_node.right)
+            if current_node.left:
+                bst_queue.enqueue(current_node.left)
+            if bst_queue.size > 0:
+                current_node = bst_queue.dequeue()
+            else:
+                break
+            
+        
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
@@ -100,8 +126,17 @@ class BinarySearchTree:
         pass
 
 
-new_tree = BinarySearchTree(5)
-new_tree.insert(80)
-new_tree.insert(90)
-new_tree.insert(400)
-max_value = new_tree.get_max()
+# new_tree = BinarySearchTree(5)
+# new_tree.insert(80)
+# new_tree.insert(90)
+# new_tree.insert(400)
+# max_value = new_tree.get_max()
+bst = BinarySearchTree(1)
+bst.insert(8)
+bst.insert(5)
+bst.insert(7)
+bst.insert(6)
+bst.insert(3)
+bst.insert(4)
+bst.insert(2)
+bst.in_order_print(bst)
